@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Epochal Lab — Operational Demonstrators</title>
+<title>Epochal Lab — Operational Companion</title>
 <style>
   :root{
     --bg:#0b0f14;
@@ -87,12 +87,8 @@
     box-shadow:0 0 0 1px rgba(77,163,255,.25) inset;
   }
 
-  .tab{
-    display:none;
-  }
-  .tab.active{
-    display:block;
-  }
+  .tab{ display:none; }
+  .tab.active{ display:block; }
 
   /* Panels */
   .grid2{
@@ -121,6 +117,8 @@
     font-size:12px;
     line-height:1.35;
   }
+  .hint ul{ margin:8px 0 0 18px; padding:0; }
+  .hint li{ margin:6px 0; }
 
   .controls{
     display:grid;
@@ -252,22 +250,89 @@
 <body>
 
 <header>
-  <h1>Epochal Lab — Operational Demonstrators</h1>
+  <h1>Epochal Lab — Operational Companion</h1>
   <div class="subtitle">
     Ordering-based tools using a fixed parameter τ. No learning · No prediction · No dynamics · No calibration · No clock locking.<br>
-    These are demonstrators of a canonical operational pipeline (ordering → channel → endpoint-only evaluation → application transform).
+    Demonstrators of a canonical operational pipeline (ordering → channel → endpoint-only evaluation → application transform).
   </div>
   <div class="row">
-    <div class="pill" id="buildPill">Build: v1.0 · 2025-12-14 · Epochal Lab</div>
-    <div class="pill">Pre-publication safe: toy datasets only</div>
-    <div class="pill">Copy outputs + JSON import/export included</div>
+    <div class="pill" id="buildPill">Build: v1.1 · 2025-12-14 · Epochal Lab</div>
+    <div class="pill">Non-claim-bearing operational companion</div>
+    <div class="pill">Toy datasets only · JSON import/export</div>
   </div>
 </header>
 
 <div class="container">
 
+  <!-- ========================= -->
+  <!-- GLOBAL SCOPE (NEW)        -->
+  <!-- ========================= -->
+  <div class="panel">
+    <h2>Scope & Status</h2>
+    <div class="hint">
+      This page is a deterministic, endpoint-only operational companion. It is provided solely for transparency and inspection.
+      <ul>
+        <li><strong>IS</strong>: operational demonstrators of ordering-based readouts under declared channels.</li>
+        <li><strong>IS NOT</strong>: a physical simulation, predictive model, cosmology, theory of time, or learning system.</li>
+        <li>No inference, no calibration, no synchronization, no temporal dynamics, no causal modification.</li>
+        <li>No scientific claims depend on this resource; readers may ignore it without loss of completeness.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- RELATION TO PAPERS (NEW)  -->
+  <!-- ========================= -->
+  <div class="panel">
+    <h2>Relation to Published Works</h2>
+    <p class="hint">Each tab is an operational illustration of concepts defined in the papers (no new assumptions or results).</p>
+    <table>
+  <thead>
+    <tr><th>Tab</th><th>Operational Concept</th><th>Primary Reference</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Recall (proxy)</td>
+      <td>Ordering-based recall proxy (Δτ proximity)</td>
+      <td>
+        Paper 1 — <em>Epochal Accessibility and Optimal Traversal on the Cosmic Timeline</em>
+      </td>
+    </tr>
+    <tr>
+      <td>Clock Comparison</td>
+      <td>Channel-separated ordering comparison</td>
+      <td>
+        Paper 2 — <em>Operational Realization of Epochal Accessibility on the Cosmic Timeline</em>
+      </td>
+    </tr>
+    <tr>
+      <td>Navigation & Routing</td>
+      <td>Accessibility ranking (endpoint-only)</td>
+      <td>
+        Paper 3 — <em>Operational Application Frameworks Induced by Epochal Accessibility</em>
+      </td>
+    </tr>
+    <tr>
+      <td>Decision Constraints</td>
+      <td>Feasibility zoning under ordered scope</td>
+      <td>
+        Paper 3 — <em>Operational Application Frameworks Induced by Epochal Accessibility</em>
+      </td>
+    </tr>
+    <tr>
+      <td>Synchronization</td>
+      <td>Ordering alignment constraints</td>
+      <td>
+        Paper 3 — <em>Operational Application Frameworks Induced by Epochal Accessibility</em>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+  </div>
+
   <div class="tabs">
-    <button class="tabbtn active" data-tab="tab-memory">1) Memory</button>
+    <button class="tabbtn active" data-tab="tab-memory">1) Recall (proxy)</button>
     <button class="tabbtn" data-tab="tab-clocks">2) Clock Comparison</button>
     <button class="tabbtn" data-tab="tab-navigation">3) Navigation & Routing</button>
     <button class="tabbtn" data-tab="tab-decision">4) Decision Constraints</button>
@@ -275,15 +340,15 @@
   </div>
 
   <!-- ========================= -->
-  <!-- TAB 1: MEMORY              -->
+  <!-- TAB 1: MEMORY / RECALL     -->
   <!-- ========================= -->
   <section class="tab active" id="tab-memory">
     <div class="grid2">
       <div class="panel">
-        <h2>Epochal Memory</h2>
+        <h2>Epochal Recall Ordering (Memory Proxy)</h2>
         <p class="hint">
-          Recall priority is driven by epochal proximity Δτ to the query, not “now” or recency.
-          (Operational demonstrator only — no cognition, no learning.)
+          Ordering-based recall proxy driven by epochal proximity Δτ to the query.
+          Operational demonstrator only — no cognition, no learning.
         </p>
 
         <div class="controls">
@@ -311,13 +376,13 @@
         </div>
 
         <div class="footer">
-          Tab build: <span class="pill">Memory v1.0</span>
+          Tab build: <span class="pill">Recall proxy v1.1</span>
         </div>
       </div>
 
       <div class="panel">
         <h2>Dataset (editable JSON)</h2>
-        <p class="hint">Paste/modify JSON then “Load JSON”. Schema: array of {id,label,tau,channel} with tau in [0,1].</p>
+        <p class="hint">Schema: array of {id,label,tau,channel} with tau in [0,1].</p>
         <textarea id="memJson"></textarea>
         <div class="btnrow">
           <button class="primary" id="memLoad">Load JSON</button>
@@ -365,7 +430,7 @@
         </div>
 
         <div class="footer">
-          Tab build: <span class="pill">Clock v1.0</span>
+          Tab build: <span class="pill">Clock v1.1</span>
         </div>
       </div>
 
@@ -389,7 +454,7 @@
   <section class="tab" id="tab-navigation">
     <div class="grid2">
       <div class="panel">
-        <h2>Navigation & Routing (WOW: multi-target ranking)</h2>
+        <h2>Navigation & Routing (multi-target ranking)</h2>
         <p class="hint">
           Choose a start node. Targets are ranked by epochal proximity (Δτ) and marked accessible via a toy threshold.
           No paths, no dynamics, endpoint-only ordering readout.
@@ -421,7 +486,7 @@
         </div>
 
         <div class="footer">
-          Tab build: <span class="pill">Navigation v1.0</span>
+          Tab build: <span class="pill">Navigation v1.1</span>
         </div>
       </div>
 
@@ -445,7 +510,7 @@
   <section class="tab" id="tab-decision">
     <div class="grid2">
       <div class="panel">
-        <h2>Decision Constraints (WOW: 3-zone scope)</h2>
+        <h2>Decision Constraints (3-zone scope)</h2>
         <p class="hint">
           Two boundaries define an epochal scope: τ_min (premature below) and τ_max (excluded above).
           This is not ranking, optimization, or ethics — it’s feasibility under ordered scope.
@@ -476,7 +541,7 @@
         </div>
 
         <div class="footer">
-          Tab build: <span class="pill">Decision v1.0</span>
+          Tab build: <span class="pill">Decision v1.1</span>
         </div>
       </div>
 
@@ -500,7 +565,7 @@
   <section class="tab" id="tab-sync">
     <div class="grid2">
       <div class="panel">
-        <h2>Multi-Scale Synchronization (perfected)</h2>
+        <h2>Multi-Scale Synchronization</h2>
         <p class="hint">
           Ordering-based alignment within Δτ_sync across heterogeneous systems.
           No simultaneity, no shared clocks, no rate locking.
@@ -533,7 +598,7 @@
         </div>
 
         <div class="footer">
-          Tab build: <span class="pill">Sync v1.0</span>
+          Tab build: <span class="pill">Sync v1.1</span>
         </div>
       </div>
 
@@ -551,8 +616,9 @@
     </div>
 
     <div class="footer" style="margin-top:16px">
-      This unified page is an operational demonstrator suite. It does not implement learning, prediction, cognition,
+      This page is an operational companion suite. It does not implement learning, prediction, cognition,
       physical time modeling, calibration, or dynamics. It is intended as a compact, reproducible “executable footprint”.
+      No claims depend on inspection of this external resource.
     </div>
   </section>
 
@@ -564,7 +630,7 @@
 /* =========================
    Helpers
 ========================= */
-const BUILD = { version:"v1.0", date:"2025-12-14", name:"Epochal Lab" };
+const BUILD = { version:"v1.1", date:"2025-12-14", name:"Epochal Lab" };
 
 function toast(msg){
   const t = document.getElementById("toast");
@@ -578,7 +644,6 @@ async function copyText(text){
     await navigator.clipboard.writeText(text);
     toast("Copied to clipboard.");
   }catch(e){
-    // fallback
     const ta = document.createElement("textarea");
     ta.value = text;
     document.body.appendChild(ta);
@@ -665,7 +730,7 @@ let decData = structuredClone(decDataDefault);
 let synData = structuredClone(synDataDefault);
 
 /* =========================
-   TAB 1: Memory
+   TAB 1: Recall (Memory proxy)
 ========================= */
 const memTau = document.getElementById("memTau");
 const memTheta = document.getElementById("memTheta");
@@ -676,7 +741,7 @@ const memOut = document.getElementById("memOut");
 const memTableBody = document.querySelector("#memTable tbody");
 
 function memScore(deltaTau){
-  // Toy monotonic accessibility (pre-publication safe)
+  // Toy monotonic score (pre-publication safe)
   return Math.exp(-5 * deltaTau);
 }
 
@@ -702,7 +767,7 @@ function updateMemory(){
     return { ...e, dTau, score, status };
   }).sort((a,b)=> a.dTau - b.dTau);
 
-  let text = "Epochal Memory — ordered recall (Δτ proximity)\n";
+  let text = "Epochal Recall Ordering — Δτ proximity (toy proxy)\n";
   text += `τ_query=${fmt(tq)} | forgetting threshold θ=${fmt(th)} (score < θ)\n\n`;
   text += "ID   | Δτ    | score  | status      | label\n";
   text += "-----|-------|--------|-------------|---------------------------\n";
@@ -712,38 +777,38 @@ function updateMemory(){
   });
 
   text += "\nInterpretation:\n";
-  text += "- Recall is driven by epochal proximity (Δτ), not recency.\n";
-  text += "- This is a demonstrator: no learning, no cognition model.\n";
+  text += "- Proxy readout driven by epochal proximity (Δτ), not recency.\n";
+  text += "- Demonstrator only: no cognition, no learning.\n";
 
   memOut.textContent = text;
 }
 
 document.getElementById("memLoad").addEventListener("click", ()=>{
   const parsed = safeParseJson(memJson.value, true);
-  if(!parsed.ok){ toast("Memory JSON error: " + parsed.err); return; }
+  if(!parsed.ok){ toast("Recall JSON error: " + parsed.err); return; }
   const arr = parsed.obj.map(o=>({
     id:String(o.id ?? ""),
     label:String(o.label ?? ""),
     tau: clamp01(Number(o.tau)),
     channel:String(o.channel ?? "human")
   })).filter(x=>x.id && x.label);
-  if(arr.length===0){ toast("Memory dataset empty/invalid."); return; }
+  if(arr.length===0){ toast("Recall dataset empty/invalid."); return; }
   memData = arr;
   renderMemTable();
   updateMemory();
-  toast("Memory dataset loaded.");
+  toast("Recall dataset loaded.");
 });
 
 document.getElementById("memExport").addEventListener("click", ()=>{
   memJson.value = JSON.stringify(memData, null, 2);
-  toast("Memory JSON exported.");
+  toast("Recall JSON exported.");
 });
 
 document.getElementById("memReset").addEventListener("click", ()=>{
   memData = structuredClone(memDataDefault);
   memJson.value = JSON.stringify(memData, null, 2);
   renderMemTable(); updateMemory();
-  toast("Memory dataset reset.");
+  toast("Recall dataset reset.");
 });
 
 document.getElementById("memCopy").addEventListener("click", ()=> copyText(memOut.textContent));
@@ -792,8 +857,8 @@ function updateClocks(){
   });
 
   text += "\nInterpretation:\n";
-  text += "- This is not synchronization or calibration.\n";
-  text += "- It is an ordering-based comparative readout.\n";
+  text += "- Not synchronization or calibration.\n";
+  text += "- Ordering-based comparative readout only.\n";
 
   clkOut.textContent = text;
   renderClkTable();
@@ -829,7 +894,7 @@ document.getElementById("clkCopy").addEventListener("click", ()=> copyText(clkOu
 clkTau.addEventListener("input", updateClocks);
 
 /* =========================
-   TAB 3: Navigation (WOW)
+   TAB 3: Navigation
 ========================= */
 const navStart = document.getElementById("navStart");
 const navEps = document.getElementById("navEps");
@@ -855,7 +920,6 @@ function fillNavStart(){
     opt.textContent = `${n.name} (${n.id}) — τ=${fmt(n.tau)}`;
     navStart.appendChild(opt);
   });
-  // default to EARTH if present
   const earth = navData.find(n=>n.id==="EARTH");
   if(earth) navStart.value = "EARTH";
 }
@@ -884,8 +948,8 @@ function updateNavigation(){
   });
 
   text += "\nInterpretation:\n";
-  text += "- This is endpoint-only ordering distance (Δτ).\n";
-  text += "- No path simulation; results are routing priorities by proximity.\n";
+  text += "- Endpoint-only ordering distance (Δτ).\n";
+  text += "- No path simulation; routing priorities by proximity.\n";
 
   navOut.textContent = text;
 }
@@ -923,7 +987,7 @@ navEps.addEventListener("input", updateNavigation);
 navStart.addEventListener("change", updateNavigation);
 
 /* =========================
-   TAB 4: Decision (WOW 3-zone)
+   TAB 4: Decision
 ========================= */
 const decMin = document.getElementById("decMin");
 const decMax = document.getElementById("decMax");
@@ -943,9 +1007,7 @@ function renderDecision(){
   let tmin = parseFloat(decMin.value);
   let tmax = parseFloat(decMax.value);
 
-  // keep sane ordering
   if(tmin > tmax){
-    // swap
     const tmp = tmin; tmin = tmax; tmax = tmp;
     decMin.value = tmin.toFixed(2);
     decMax.value = tmax.toFixed(2);
@@ -954,7 +1016,6 @@ function renderDecision(){
   decMinLabel.textContent = fmt(tmin);
   decMaxLabel.textContent = fmt(tmax);
 
-  // table
   decTableBody.innerHTML = "";
   const rows = decData.map(d=>{
     const tau = clamp01(d.tau);
@@ -972,7 +1033,6 @@ function renderDecision(){
     decTableBody.appendChild(tr);
   });
 
-  // output
   let text = "Epochal Decision Constraints — 3-zone scope\n";
   text += `τ_min=${fmt(tmin)} (below = PREMATURE)\n`;
   text += `τ_max=${fmt(tmax)} (above = EXCLUDED)\n\n`;
@@ -985,10 +1045,10 @@ function renderDecision(){
   });
 
   text += "\nInterpretation:\n";
-  text += "- PREMATURE: below τ_min, decision scope not yet meaningful.\n";
-  text += "- FEASIBLE: within [τ_min, τ_max], in-scope for evaluation.\n";
-  text += "- EXCLUDED: beyond τ_max, outside current epochal horizon.\n";
-  text += "- This is not ranking or optimization; it is scope control.\n";
+  text += "- PREMATURE: below τ_min, scope not yet meaningful.\n";
+  text += "- FEASIBLE: within [τ_min, τ_max], in-scope.\n";
+  text += "- EXCLUDED: beyond τ_max, outside current horizon.\n";
+  text += "- Not ranking/optimization; scope control only.\n";
 
   decOut.textContent = text;
 }
@@ -1036,7 +1096,6 @@ function renderSync(){
   const tol = parseFloat(synTol.value);
   synTolLabel.textContent = fmt(tol);
 
-  // pairs
   let alignedPairs = [];
   let misalignedPairs = [];
   let alignedSet = new Set();
@@ -1054,7 +1113,6 @@ function renderSync(){
     }
   }
 
-  // table
   synTableBody.innerHTML = "";
   synData.forEach(s=>{
     const yes = alignedSet.has(s.id);
@@ -1063,7 +1121,6 @@ function renderSync(){
     synTableBody.appendChild(tr);
   });
 
-  // output
   let text = "Epochal Multi-Scale Synchronization — alignment pairs\n";
   text += `Δτ_sync=${fmt(tol)}\n\n`;
 
@@ -1077,7 +1134,7 @@ function renderSync(){
 
   text += "\nInterpretation:\n";
   text += "- Alignment means ordering-coherence within Δτ_sync.\n";
-  text += "- Systems need not share clocks or rates.\n";
+  text += "- No shared clocks/rates are required.\n";
   text += "- Misalignment indicates scale separation, not failure.\n";
 
   synOut.textContent = text;
