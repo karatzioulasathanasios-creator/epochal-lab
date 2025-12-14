@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Epochal Lab — Operational Demonstrators</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#121821;
+    --panel2:#0f1520;
+    --text:#eaeaea;
+    --muted:#9aa4b2;
+    --line:#222a36;
+    --ok:#7CFF9B;
+    --bad:#FF7C7C;
+    --warn:#FFD37C;
+    --accent:#4da3ff;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+  }
+  header{
+    padding:18px 20px 10px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#0d131c,transparent);
+  }
+  h1{
+    margin:0 0 6px;
+    font-size:18px;
+    font-weight:650;
+    letter-spacing:.2px;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:12.5px;
+    line-height:1.35;
+  }
+  .row{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
+  .pill{
+    font-size:11px;
+    color:var(--muted);
+    padding:6px 10px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:#0c1119;
+  }
+  .container{
+    padding:14px 20px 20px;
+    max-width:1200px;
+    margin:0 auto;
+  }
+
+  /* Tabs */
+  .tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:8px 0 14px;
+  }
+  .tabbtn{
+    border:1px solid var(--line);
+    background:#0c1119;
+    color:var(--text);
+    border-radius:10px;
+    padding:9px 12px;
+    font-size:12.5px;
+    cursor:pointer;
+    transition:transform .04s ease, border-color .12s ease;
+  }
+  .tabbtn:hover{ border-color:#2b3950; }
+  .tabbtn:active{ transform:translateY(1px); }
+  .tabbtn.active{
+    border-color:var(--accent);
+    box-shadow:0 0 0 1px rgba(77,163,255,.25) inset;
+  }
+
+  .tab{
+    display:none;
+  }
+  .tab.active{
+    display:block;
+  }
+
+  /* Panels */
+  .grid2{
+    display:grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap:14px;
+  }
+  @media (max-width: 980px){
+    .grid2{ grid-template-columns: 1fr; }
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px;
+  }
+  .panel h2{
+    margin:0 0 6px;
+    font-size:14px;
+    font-weight:650;
+  }
+  .panel .hint{
+    margin:0 0 10px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.35;
+  }
+
+  .controls{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+    align-items:end;
+  }
+  @media (max-width: 700px){
+    .controls{ grid-template-columns: 1fr; }
+  }
+
+  label{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  input[type="range"]{ width:100%; }
+  input[type="number"]{
+    width:100%;
+    padding:10px 10px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--panel2);
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:13px;
+  }
+
+  button{
+    border:1px solid var(--line);
+    background:#0c1119;
+    color:var(--text);
+    border-radius:10px;
+    padding:9px 10px;
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  button:hover{ border-color:#2b3950; }
+  button.primary{
+    border-color:rgba(77,163,255,.55);
+    box-shadow:0 0 0 1px rgba(77,163,255,.18) inset;
+  }
+  .btnrow{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
+
+  textarea{
+    width:100%;
+    min-height:160px;
+    resize:vertical;
+    padding:10px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--panel2);
+    color:var(--text);
+    font-family:var(--mono);
+    font-size:12px;
+    line-height:1.35;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  th, td{
+    padding:8px 10px;
+    border-bottom:1px solid var(--line);
+    text-align:left;
+    vertical-align:top;
+  }
+  th{ color:var(--muted); font-weight:500; background:#0c1119; }
+  tr:last-child td{ border-bottom:none; }
+
+  .output{
+    font-family:var(--mono);
+    background:#070a10;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px;
+    white-space:pre;
+    overflow:auto;
+    min-height:180px;
+    font-size:12px;
+    line-height:1.35;
+  }
+
+  .tag-ok{ color:var(--ok); font-weight:650; }
+  .tag-bad{ color:var(--bad); font-weight:650; }
+  .tag-warn{ color:var(--warn); font-weight:650; }
+
+  .footer{
+    margin-top:16px;
+    color:var(--muted);
+    font-size:11.5px;
+    line-height:1.35;
+    padding:10px 0 0;
+    border-top:1px solid var(--line);
+  }
+
+  .toast{
+    position:fixed;
+    right:14px;
+    bottom:14px;
+    background:#0c1119;
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:10px 12px;
+    border-radius:12px;
+    font-size:12px;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .18s ease, transform .18s ease;
+    pointer-events:none;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Epochal Lab — Operational Demonstrators</h1>
+  <div class="subtitle">
+    Ordering-based tools using a fixed parameter τ. No learning · No prediction · No dynamics · No calibration · No clock locking.<br>
+    These are demonstrators of a canonical operational pipeline (ordering → channel → endpoint-only evaluation → application transform).
+  </div>
+  <div class="row">
+    <div class="pill" id="buildPill">Build: v1.0 · 2025-12-14 · Epochal Lab</div>
+    <div class="pill">Pre-publication safe: toy datasets only</div>
+    <div class="pill">Copy outputs + JSON import/export included</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="tabs">
+    <button class="tabbtn active" data-tab="tab-memory">1) Memory</button>
+    <button class="tabbtn" data-tab="tab-clocks">2) Clock Comparison</button>
+    <button class="tabbtn" data-tab="tab-navigation">3) Navigation & Routing</button>
+    <button class="tabbtn" data-tab="tab-decision">4) Decision Constraints</button>
+    <button class="tabbtn" data-tab="tab-sync">5) Multi-Scale Synchronization</button>
+  </div>
+
+  <!-- ========================= -->
+  <!-- TAB 1: MEMORY              -->
+  <!-- ========================= -->
+  <section class="tab active" id="tab-memory">
+    <div class="grid2">
+      <div class="panel">
+        <h2>Epochal Memory</h2>
+        <p class="hint">
+          Recall priority is driven by epochal proximity Δτ to the query, not “now” or recency.
+          (Operational demonstrator only — no cognition, no learning.)
+        </p>
+
+        <div class="controls">
+          <div>
+            <label>τ_query: <strong><span id="memTauLabel">0.50</span></strong></label>
+            <input id="memTau" type="range" min="0" max="1" step="0.01" value="0.50">
+          </div>
+          <div>
+            <label>Forgetting threshold (score &lt; θ): <strong><span id="memThetaLabel">0.10</span></strong></label>
+            <input id="memTheta" type="range" min="0" max="1" step="0.01" value="0.10">
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button class="primary" id="memCopy">Copy output</button>
+          <button id="memExport">Export JSON</button>
+          <button id="memReset">Reset dataset</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <table id="memTable">
+            <thead><tr><th>ID</th><th>Label</th><th>τ</th><th>Channel</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="footer">
+          Tab build: <span class="pill">Memory v1.0</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Dataset (editable JSON)</h2>
+        <p class="hint">Paste/modify JSON then “Load JSON”. Schema: array of {id,label,tau,channel} with tau in [0,1].</p>
+        <textarea id="memJson"></textarea>
+        <div class="btnrow">
+          <button class="primary" id="memLoad">Load JSON</button>
+        </div>
+
+        <h2 style="margin-top:14px">Output</h2>
+        <div class="output" id="memOut"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= -->
+  <!-- TAB 2: CLOCKS             -->
+  <!-- ========================= -->
+  <section class="tab" id="tab-clocks">
+    <div class="grid2">
+      <div class="panel">
+        <h2>Epochal Clock Comparison</h2>
+        <p class="hint">
+          Operational comparison of heterogeneous clock readouts via ordering proximity to a reference epoch τ_ref.
+          No synchronization, no calibration, no physical clock modeling.
+        </p>
+
+        <div class="controls">
+          <div>
+            <label>τ_ref: <strong><span id="clkTauLabel">0.50</span></strong></label>
+            <input id="clkTau" type="range" min="0" max="1" step="0.01" value="0.50">
+          </div>
+          <div>
+            <label>Highlight closest clock</label>
+            <button class="primary" id="clkCopy">Copy output</button>
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button id="clkExport">Export JSON</button>
+          <button id="clkReset">Reset dataset</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <table id="clkTable">
+            <thead><tr><th>ID</th><th>Type</th><th>τ</th><th>Δτ to τ_ref</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="footer">
+          Tab build: <span class="pill">Clock v1.0</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Dataset (editable JSON)</h2>
+        <p class="hint">Schema: array of {id,label,tau}. tau in [0,1].</p>
+        <textarea id="clkJson"></textarea>
+        <div class="btnrow">
+          <button class="primary" id="clkLoad">Load JSON</button>
+        </div>
+
+        <h2 style="margin-top:14px">Output</h2>
+        <div class="output" id="clkOut"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= -->
+  <!-- TAB 3: NAVIGATION          -->
+  <!-- ========================= -->
+  <section class="tab" id="tab-navigation">
+    <div class="grid2">
+      <div class="panel">
+        <h2>Navigation & Routing (WOW: multi-target ranking)</h2>
+        <p class="hint">
+          Choose a start node. Targets are ranked by epochal proximity (Δτ) and marked accessible via a toy threshold.
+          No paths, no dynamics, endpoint-only ordering readout.
+        </p>
+
+        <div class="controls">
+          <div>
+            <label>Start node</label>
+            <select id="navStart" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);">
+            </select>
+          </div>
+          <div>
+            <label>Accessibility threshold (Δτ ≤ ε): <strong><span id="navEpsLabel">0.20</span></strong></label>
+            <input id="navEps" type="range" min="0" max="1" step="0.01" value="0.20">
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button class="primary" id="navCopy">Copy output</button>
+          <button id="navExport">Export JSON</button>
+          <button id="navReset">Reset dataset</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <table id="navTable">
+            <thead><tr><th>ID</th><th>Name</th><th>τ</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="footer">
+          Tab build: <span class="pill">Navigation v1.0</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Dataset (editable JSON)</h2>
+        <p class="hint">Schema: array of {id,name,tau}. tau in [0,1].</p>
+        <textarea id="navJson"></textarea>
+        <div class="btnrow">
+          <button class="primary" id="navLoad">Load JSON</button>
+        </div>
+
+        <h2 style="margin-top:14px">Output</h2>
+        <div class="output" id="navOut"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= -->
+  <!-- TAB 4: DECISION            -->
+  <!-- ========================= -->
+  <section class="tab" id="tab-decision">
+    <div class="grid2">
+      <div class="panel">
+        <h2>Decision Constraints (WOW: 3-zone scope)</h2>
+        <p class="hint">
+          Two boundaries define an epochal scope: τ_min (premature below) and τ_max (excluded above).
+          This is not ranking, optimization, or ethics — it’s feasibility under ordered scope.
+        </p>
+
+        <div class="controls">
+          <div>
+            <label>τ_min (below = <span class="tag-warn">PREMATURE</span>): <strong><span id="decMinLabel">0.20</span></strong></label>
+            <input id="decMin" type="range" min="0" max="1" step="0.01" value="0.20">
+          </div>
+          <div>
+            <label>τ_max (above = <span class="tag-bad">EXCLUDED</span>): <strong><span id="decMaxLabel">0.70</span></strong></label>
+            <input id="decMax" type="range" min="0" max="1" step="0.01" value="0.70">
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button class="primary" id="decCopy">Copy output</button>
+          <button id="decExport">Export JSON</button>
+          <button id="decReset">Reset dataset</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <table id="decTable">
+            <thead><tr><th>ID</th><th>Decision</th><th>τ</th><th>Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="footer">
+          Tab build: <span class="pill">Decision v1.0</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Dataset (editable JSON)</h2>
+        <p class="hint">Schema: array of {id,label,tau}. tau in [0,1].</p>
+        <textarea id="decJson"></textarea>
+        <div class="btnrow">
+          <button class="primary" id="decLoad">Load JSON</button>
+        </div>
+
+        <h2 style="margin-top:14px">Output</h2>
+        <div class="output" id="decOut"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= -->
+  <!-- TAB 5: SYNCHRONIZATION     -->
+  <!-- ========================= -->
+  <section class="tab" id="tab-sync">
+    <div class="grid2">
+      <div class="panel">
+        <h2>Multi-Scale Synchronization (perfected)</h2>
+        <p class="hint">
+          Ordering-based alignment within Δτ_sync across heterogeneous systems.
+          No simultaneity, no shared clocks, no rate locking.
+        </p>
+
+        <div class="controls">
+          <div>
+            <label>Δτ_sync (alignment window): <strong><span id="synTolLabel">0.10</span></strong></label>
+            <input id="synTol" type="range" min="0" max="0.5" step="0.01" value="0.10">
+            <div style="margin-top:6px;color:var(--muted);font-size:11.5px;">
+              Increasing Δτ_sync broadens the epochal alignment window.
+            </div>
+          </div>
+          <div>
+            <label>Actions</label>
+            <button class="primary" id="synCopy">Copy output</button>
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button id="synExport">Export JSON</button>
+          <button id="synReset">Reset dataset</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <table id="synTable">
+            <thead><tr><th>ID</th><th>System</th><th>τ</th><th>In ≥1 aligned pair?</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="footer">
+          Tab build: <span class="pill">Sync v1.0</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Dataset (editable JSON)</h2>
+        <p class="hint">Schema: array of {id,label,tau}. tau in [0,1].</p>
+        <textarea id="synJson"></textarea>
+        <div class="btnrow">
+          <button class="primary" id="synLoad">Load JSON</button>
+        </div>
+
+        <h2 style="margin-top:14px">Output</h2>
+        <div class="output" id="synOut"></div>
+      </div>
+    </div>
+
+    <div class="footer" style="margin-top:16px">
+      This unified page is an operational demonstrator suite. It does not implement learning, prediction, cognition,
+      physical time modeling, calibration, or dynamics. It is intended as a compact, reproducible “executable footprint”.
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Copied.</div>
+
+<script>
+/* =========================
+   Helpers
+========================= */
+const BUILD = { version:"v1.0", date:"2025-12-14", name:"Epochal Lab" };
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg || "Done.";
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 900);
+}
+
+async function copyText(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    toast("Copied to clipboard.");
+  }catch(e){
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+    toast("Copied (fallback).");
+  }
+}
+
+function safeParseJson(text, expectArray=true){
+  try{
+    const obj = JSON.parse(text);
+    if(expectArray && !Array.isArray(obj)) throw new Error("JSON must be an array.");
+    return { ok:true, obj };
+  }catch(e){
+    return { ok:false, err:e.message };
+  }
+}
+
+function clamp01(x){
+  if(Number.isNaN(x)) return 0;
+  return Math.max(0, Math.min(1, x));
+}
+
+function fmt(x){ return (Math.round(x*100)/100).toFixed(2); }
+
+/* =========================
+   Tabs
+========================= */
+document.querySelectorAll(".tabbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+
+/* =========================
+   Default datasets
+========================= */
+let memDataDefault = [
+  { id:"E1", label:"Foundational insight", tau:0.12, channel:"human" },
+  { id:"E2", label:"Critical decision",     tau:0.38, channel:"human" },
+  { id:"E3", label:"System transition",     tau:0.57, channel:"human" },
+  { id:"E4", label:"Long-term consequence", tau:0.91, channel:"human" }
+];
+
+let clkDataDefault = [
+  { id:"C1", label:"Atomic clock",  tau:0.22 },
+  { id:"C2", label:"Optical clock", tau:0.61 },
+  { id:"C3", label:"Reference feed",tau:0.83 }
+];
+
+let navDataDefault = [
+  { id:"EARTH", name:"Earth", tau:0.67 },
+  { id:"VIRGO", name:"Virgo Cluster", tau:0.39 },
+  { id:"A1689", name:"Abell 1689", tau:0.61 },
+  { id:"PSR1",  name:"PSR J1713+0747", tau:0.49 },
+  { id:"PSR2",  name:"PSR J1909-3744", tau:0.57 },
+  { id:"PSR3",  name:"PSR J0437-4715", tau:0.62 }
+];
+
+let decDataDefault = [
+  { id:"D1", label:"Short-term gain", tau:0.15 },
+  { id:"D2", label:"Infrastructure investment", tau:0.45 },
+  { id:"D3", label:"Climate stabilization", tau:0.75 },
+  { id:"D4", label:"Intergenerational safeguard", tau:0.92 }
+];
+
+let synDataDefault = [
+  { id:"S1", label:"Human decision cycle", tau:0.42 },
+  { id:"S2", label:"AI planning module", tau:0.48 },
+  { id:"S3", label:"Institutional process", tau:0.55 },
+  { id:"S4", label:"Long-term infrastructure", tau:0.72 }
+];
+
+/* Working datasets */
+let memData = structuredClone(memDataDefault);
+let clkData = structuredClone(clkDataDefault);
+let navData = structuredClone(navDataDefault);
+let decData = structuredClone(decDataDefault);
+let synData = structuredClone(synDataDefault);
+
+/* =========================
+   TAB 1: Memory
+========================= */
+const memTau = document.getElementById("memTau");
+const memTheta = document.getElementById("memTheta");
+const memTauLabel = document.getElementById("memTauLabel");
+const memThetaLabel = document.getElementById("memThetaLabel");
+const memJson = document.getElementById("memJson");
+const memOut = document.getElementById("memOut");
+const memTableBody = document.querySelector("#memTable tbody");
+
+function memScore(deltaTau){
+  // Toy monotonic accessibility (pre-publication safe)
+  return Math.exp(-5 * deltaTau);
+}
+
+function renderMemTable(){
+  memTableBody.innerHTML = "";
+  memData.forEach(e=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${e.id}</td><td>${e.label}</td><td>${fmt(e.tau)}</td><td>${e.channel}</td>`;
+    memTableBody.appendChild(tr);
+  });
+}
+
+function updateMemory(){
+  const tq = parseFloat(memTau.value);
+  const th = parseFloat(memTheta.value);
+  memTauLabel.textContent = fmt(tq);
+  memThetaLabel.textContent = fmt(th);
+
+  const ranked = memData.map(e=>{
+    const dTau = Math.abs(clamp01(e.tau) - tq);
+    const score = memScore(dTau);
+    const status = (score < th) ? "FORGOTTEN" : "RECALLABLE";
+    return { ...e, dTau, score, status };
+  }).sort((a,b)=> a.dTau - b.dTau);
+
+  let text = "Epochal Memory — ordered recall (Δτ proximity)\n";
+  text += `τ_query=${fmt(tq)} | forgetting threshold θ=${fmt(th)} (score < θ)\n\n`;
+  text += "ID   | Δτ    | score  | status      | label\n";
+  text += "-----|-------|--------|-------------|---------------------------\n";
+  ranked.forEach(r=>{
+    const mark = (r.status==="RECALLABLE") ? "✔" : "✖";
+    text += `${mark} ${r.id.padEnd(4)}| ${fmt(r.dTau)} | ${r.score.toFixed(3).padEnd(6)} | ${r.status.padEnd(11)} | ${r.label}\n`;
+  });
+
+  text += "\nInterpretation:\n";
+  text += "- Recall is driven by epochal proximity (Δτ), not recency.\n";
+  text += "- This is a demonstrator: no learning, no cognition model.\n";
+
+  memOut.textContent = text;
+}
+
+document.getElementById("memLoad").addEventListener("click", ()=>{
+  const parsed = safeParseJson(memJson.value, true);
+  if(!parsed.ok){ toast("Memory JSON error: " + parsed.err); return; }
+  const arr = parsed.obj.map(o=>({
+    id:String(o.id ?? ""),
+    label:String(o.label ?? ""),
+    tau: clamp01(Number(o.tau)),
+    channel:String(o.channel ?? "human")
+  })).filter(x=>x.id && x.label);
+  if(arr.length===0){ toast("Memory dataset empty/invalid."); return; }
+  memData = arr;
+  renderMemTable();
+  updateMemory();
+  toast("Memory dataset loaded.");
+});
+
+document.getElementById("memExport").addEventListener("click", ()=>{
+  memJson.value = JSON.stringify(memData, null, 2);
+  toast("Memory JSON exported.");
+});
+
+document.getElementById("memReset").addEventListener("click", ()=>{
+  memData = structuredClone(memDataDefault);
+  memJson.value = JSON.stringify(memData, null, 2);
+  renderMemTable(); updateMemory();
+  toast("Memory dataset reset.");
+});
+
+document.getElementById("memCopy").addEventListener("click", ()=> copyText(memOut.textContent));
+memTau.addEventListener("input", updateMemory);
+memTheta.addEventListener("input", updateMemory);
+
+/* =========================
+   TAB 2: Clocks
+========================= */
+const clkTau = document.getElementById("clkTau");
+const clkTauLabel = document.getElementById("clkTauLabel");
+const clkJson = document.getElementById("clkJson");
+const clkOut = document.getElementById("clkOut");
+const clkTableBody = document.querySelector("#clkTable tbody");
+
+function renderClkTable(){
+  const trq = parseFloat(clkTau.value);
+  const ranked = clkData.map(c=>{
+    const dTau = Math.abs(clamp01(c.tau) - trq);
+    return { ...c, dTau };
+  }).sort((a,b)=>a.dTau-b.dTau);
+
+  clkTableBody.innerHTML = "";
+  ranked.forEach((c, idx)=>{
+    const tr = document.createElement("tr");
+    const star = (idx===0) ? `<span style="color:var(--ok);font-weight:700">closest</span>` : "";
+    tr.innerHTML = `<td>${c.id}</td><td>${c.label}</td><td>${fmt(c.tau)}</td><td>${fmt(c.dTau)} ${star}</td>`;
+    clkTableBody.appendChild(tr);
+  });
+}
+
+function updateClocks(){
+  const trq = parseFloat(clkTau.value);
+  clkTauLabel.textContent = fmt(trq);
+
+  const ranked = clkData.map(c=>{
+    const dTau = Math.abs(clamp01(c.tau) - trq);
+    return { ...c, dTau };
+  }).sort((a,b)=>a.dTau-b.dTau);
+
+  let text = "Epochal Clock Comparison — proximity to τ_ref\n";
+  text += `τ_ref=${fmt(trq)}\n\n`;
+  ranked.forEach((c, i)=>{
+    const mark = (i===0) ? "★" : " ";
+    text += `${mark} ${c.id} | ${c.label} | Δτ=${fmt(c.dTau)}\n`;
+  });
+
+  text += "\nInterpretation:\n";
+  text += "- This is not synchronization or calibration.\n";
+  text += "- It is an ordering-based comparative readout.\n";
+
+  clkOut.textContent = text;
+  renderClkTable();
+}
+
+document.getElementById("clkLoad").addEventListener("click", ()=>{
+  const parsed = safeParseJson(clkJson.value, true);
+  if(!parsed.ok){ toast("Clock JSON error: " + parsed.err); return; }
+  const arr = parsed.obj.map(o=>({
+    id:String(o.id ?? ""),
+    label:String(o.label ?? ""),
+    tau: clamp01(Number(o.tau))
+  })).filter(x=>x.id && x.label);
+  if(arr.length===0){ toast("Clock dataset empty/invalid."); return; }
+  clkData = arr;
+  updateClocks();
+  toast("Clock dataset loaded.");
+});
+
+document.getElementById("clkExport").addEventListener("click", ()=>{
+  clkJson.value = JSON.stringify(clkData, null, 2);
+  toast("Clock JSON exported.");
+});
+
+document.getElementById("clkReset").addEventListener("click", ()=>{
+  clkData = structuredClone(clkDataDefault);
+  clkJson.value = JSON.stringify(clkData, null, 2);
+  updateClocks();
+  toast("Clock dataset reset.");
+});
+
+document.getElementById("clkCopy").addEventListener("click", ()=> copyText(clkOut.textContent));
+clkTau.addEventListener("input", updateClocks);
+
+/* =========================
+   TAB 3: Navigation (WOW)
+========================= */
+const navStart = document.getElementById("navStart");
+const navEps = document.getElementById("navEps");
+const navEpsLabel = document.getElementById("navEpsLabel");
+const navJson = document.getElementById("navJson");
+const navOut = document.getElementById("navOut");
+const navTableBody = document.querySelector("#navTable tbody");
+
+function renderNavTable(){
+  navTableBody.innerHTML = "";
+  navData.forEach(n=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${n.id}</td><td>${n.name}</td><td>${fmt(n.tau)}</td>`;
+    navTableBody.appendChild(tr);
+  });
+}
+
+function fillNavStart(){
+  navStart.innerHTML = "";
+  navData.forEach(n=>{
+    const opt = document.createElement("option");
+    opt.value = n.id;
+    opt.textContent = `${n.name} (${n.id}) — τ=${fmt(n.tau)}`;
+    navStart.appendChild(opt);
+  });
+  // default to EARTH if present
+  const earth = navData.find(n=>n.id==="EARTH");
+  if(earth) navStart.value = "EARTH";
+}
+
+function updateNavigation(){
+  const eps = parseFloat(navEps.value);
+  navEpsLabel.textContent = fmt(eps);
+
+  const startId = navStart.value;
+  const start = navData.find(n=>n.id===startId) || navData[0];
+  const targets = navData.filter(n=>n.id!==start.id).map(t=>{
+    const dTau = Math.abs(clamp01(t.tau) - clamp01(start.tau));
+    const accessible = dTau <= eps;
+    return { ...t, dTau, accessible };
+  }).sort((a,b)=> a.dTau - b.dTau);
+
+  let text = "Epochal Navigation & Routing — multi-target ranking\n";
+  text += `Start: ${start.name} (${start.id}) | τ=${fmt(start.tau)}\n`;
+  text += `Accessibility threshold: ε=${fmt(eps)} (accessible if Δτ ≤ ε)\n\n`;
+  text += "Rank | Target (ID)                | Δτ    | accessible\n";
+  text += "-----|----------------------------|-------|-----------\n";
+  targets.forEach((t, i)=>{
+    const mark = t.accessible ? "YES" : "NO";
+    const tag = t.accessible ? "✔" : "✖";
+    text += `${String(i+1).padEnd(4)} | ${(t.name+" ("+t.id+")").padEnd(26)} | ${fmt(t.dTau)} | ${tag} ${mark}\n`;
+  });
+
+  text += "\nInterpretation:\n";
+  text += "- This is endpoint-only ordering distance (Δτ).\n";
+  text += "- No path simulation; results are routing priorities by proximity.\n";
+
+  navOut.textContent = text;
+}
+
+document.getElementById("navLoad").addEventListener("click", ()=>{
+  const parsed = safeParseJson(navJson.value, true);
+  if(!parsed.ok){ toast("Navigation JSON error: " + parsed.err); return; }
+  const arr = parsed.obj.map(o=>({
+    id:String(o.id ?? ""),
+    name:String(o.name ?? ""),
+    tau: clamp01(Number(o.tau))
+  })).filter(x=>x.id && x.name);
+  if(arr.length < 2){ toast("Need at least 2 nodes."); return; }
+  navData = arr;
+  renderNavTable();
+  fillNavStart();
+  updateNavigation();
+  toast("Navigation dataset loaded.");
+});
+
+document.getElementById("navExport").addEventListener("click", ()=>{
+  navJson.value = JSON.stringify(navData, null, 2);
+  toast("Navigation JSON exported.");
+});
+
+document.getElementById("navReset").addEventListener("click", ()=>{
+  navData = structuredClone(navDataDefault);
+  navJson.value = JSON.stringify(navData, null, 2);
+  renderNavTable(); fillNavStart(); updateNavigation();
+  toast("Navigation dataset reset.");
+});
+
+document.getElementById("navCopy").addEventListener("click", ()=> copyText(navOut.textContent));
+navEps.addEventListener("input", updateNavigation);
+navStart.addEventListener("change", updateNavigation);
+
+/* =========================
+   TAB 4: Decision (WOW 3-zone)
+========================= */
+const decMin = document.getElementById("decMin");
+const decMax = document.getElementById("decMax");
+const decMinLabel = document.getElementById("decMinLabel");
+const decMaxLabel = document.getElementById("decMaxLabel");
+const decJson = document.getElementById("decJson");
+const decOut = document.getElementById("decOut");
+const decTableBody = document.querySelector("#decTable tbody");
+
+function statusForDecision(tau, tmin, tmax){
+  if(tau < tmin) return "PREMATURE";
+  if(tau > tmax) return "EXCLUDED";
+  return "FEASIBLE";
+}
+
+function renderDecision(){
+  let tmin = parseFloat(decMin.value);
+  let tmax = parseFloat(decMax.value);
+
+  // keep sane ordering
+  if(tmin > tmax){
+    // swap
+    const tmp = tmin; tmin = tmax; tmax = tmp;
+    decMin.value = tmin.toFixed(2);
+    decMax.value = tmax.toFixed(2);
+  }
+
+  decMinLabel.textContent = fmt(tmin);
+  decMaxLabel.textContent = fmt(tmax);
+
+  // table
+  decTableBody.innerHTML = "";
+  const rows = decData.map(d=>{
+    const tau = clamp01(d.tau);
+    const st = statusForDecision(tau, tmin, tmax);
+    return { ...d, tau, st };
+  }).sort((a,b)=> a.tau - b.tau);
+
+  rows.forEach(r=>{
+    const tr = document.createElement("tr");
+    let badge = "";
+    if(r.st==="FEASIBLE") badge = `<span class="tag-ok">FEASIBLE</span>`;
+    if(r.st==="PREMATURE") badge = `<span class="tag-warn">PREMATURE</span>`;
+    if(r.st==="EXCLUDED") badge = `<span class="tag-bad">EXCLUDED</span>`;
+    tr.innerHTML = `<td>${r.id}</td><td>${r.label}</td><td>${fmt(r.tau)}</td><td>${badge}</td>`;
+    decTableBody.appendChild(tr);
+  });
+
+  // output
+  let text = "Epochal Decision Constraints — 3-zone scope\n";
+  text += `τ_min=${fmt(tmin)} (below = PREMATURE)\n`;
+  text += `τ_max=${fmt(tmax)} (above = EXCLUDED)\n\n`;
+
+  text += "ID  | τ    | status     | decision\n";
+  text += "----|------|------------|-----------------------------\n";
+  rows.forEach(r=>{
+    const mark = (r.st==="FEASIBLE") ? "✔" : (r.st==="PREMATURE" ? "!" : "✖");
+    text += `${mark} ${r.id.padEnd(3)}| ${fmt(r.tau)} | ${r.st.padEnd(10)} | ${r.label}\n`;
+  });
+
+  text += "\nInterpretation:\n";
+  text += "- PREMATURE: below τ_min, decision scope not yet meaningful.\n";
+  text += "- FEASIBLE: within [τ_min, τ_max], in-scope for evaluation.\n";
+  text += "- EXCLUDED: beyond τ_max, outside current epochal horizon.\n";
+  text += "- This is not ranking or optimization; it is scope control.\n";
+
+  decOut.textContent = text;
+}
+
+document.getElementById("decLoad").addEventListener("click", ()=>{
+  const parsed = safeParseJson(decJson.value, true);
+  if(!parsed.ok){ toast("Decision JSON error: " + parsed.err); return; }
+  const arr = parsed.obj.map(o=>({
+    id:String(o.id ?? ""),
+    label:String(o.label ?? ""),
+    tau: clamp01(Number(o.tau))
+  })).filter(x=>x.id && x.label);
+  if(arr.length===0){ toast("Decision dataset empty/invalid."); return; }
+  decData = arr;
+  renderDecision();
+  toast("Decision dataset loaded.");
+});
+
+document.getElementById("decExport").addEventListener("click", ()=>{
+  decJson.value = JSON.stringify(decData, null, 2);
+  toast("Decision JSON exported.");
+});
+
+document.getElementById("decReset").addEventListener("click", ()=>{
+  decData = structuredClone(decDataDefault);
+  decJson.value = JSON.stringify(decData, null, 2);
+  renderDecision();
+  toast("Decision dataset reset.");
+});
+
+document.getElementById("decCopy").addEventListener("click", ()=> copyText(decOut.textContent));
+decMin.addEventListener("input", renderDecision);
+decMax.addEventListener("input", renderDecision);
+
+/* =========================
+   TAB 5: Synchronization
+========================= */
+const synTol = document.getElementById("synTol");
+const synTolLabel = document.getElementById("synTolLabel");
+const synJson = document.getElementById("synJson");
+const synOut = document.getElementById("synOut");
+const synTableBody = document.querySelector("#synTable tbody");
+
+function renderSync(){
+  const tol = parseFloat(synTol.value);
+  synTolLabel.textContent = fmt(tol);
+
+  // pairs
+  let alignedPairs = [];
+  let misalignedPairs = [];
+  let alignedSet = new Set();
+
+  for(let i=0;i<synData.length;i++){
+    for(let j=i+1;j<synData.length;j++){
+      const a = synData[i], b = synData[j];
+      const dTau = Math.abs(clamp01(a.tau) - clamp01(b.tau));
+      if(dTau <= tol){
+        alignedPairs.push({a:a.id,b:b.id,d:dTau});
+        alignedSet.add(a.id); alignedSet.add(b.id);
+      }else{
+        misalignedPairs.push({a:a.id,b:b.id,d:dTau});
+      }
+    }
+  }
+
+  // table
+  synTableBody.innerHTML = "";
+  synData.forEach(s=>{
+    const yes = alignedSet.has(s.id);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${s.id}</td><td>${s.label}</td><td>${fmt(s.tau)}</td><td>${yes ? '<span class="tag-ok">YES</span>' : '<span style="color:var(--muted)">no</span>'}</td>`;
+    synTableBody.appendChild(tr);
+  });
+
+  // output
+  let text = "Epochal Multi-Scale Synchronization — alignment pairs\n";
+  text += `Δτ_sync=${fmt(tol)}\n\n`;
+
+  text += "ALIGNED PAIRS:\n";
+  if(alignedPairs.length===0) text += "(none)\n";
+  alignedPairs.forEach(p=> text += `✔ ${p.a} ↔ ${p.b} | Δτ=${fmt(p.d)}\n`);
+
+  text += "\nMISALIGNED PAIRS:\n";
+  if(misalignedPairs.length===0) text += "(none)\n";
+  misalignedPairs.forEach(p=> text += `✖ ${p.a} ↔ ${p.b} | Δτ=${fmt(p.d)}\n`);
+
+  text += "\nInterpretation:\n";
+  text += "- Alignment means ordering-coherence within Δτ_sync.\n";
+  text += "- Systems need not share clocks or rates.\n";
+  text += "- Misalignment indicates scale separation, not failure.\n";
+
+  synOut.textContent = text;
+}
+
+document.getElementById("synLoad").addEventListener("click", ()=>{
+  const parsed = safeParseJson(synJson.value, true);
+  if(!parsed.ok){ toast("Sync JSON error: " + parsed.err); return; }
+  const arr = parsed.obj.map(o=>({
+    id:String(o.id ?? ""),
+    label:String(o.label ?? ""),
+    tau: clamp01(Number(o.tau))
+  })).filter(x=>x.id && x.label);
+  if(arr.length < 2){ toast("Need at least 2 systems."); return; }
+  synData = arr;
+  renderSync();
+  toast("Sync dataset loaded.");
+});
+
+document.getElementById("synExport").addEventListener("click", ()=>{
+  synJson.value = JSON.stringify(synData, null, 2);
+  toast("Sync JSON exported.");
+});
+
+document.getElementById("synReset").addEventListener("click", ()=>{
+  synData = structuredClone(synDataDefault);
+  synJson.value = JSON.stringify(synData, null, 2);
+  renderSync();
+  toast("Sync dataset reset.");
+});
+
+document.getElementById("synCopy").addEventListener("click", ()=> copyText(synOut.textContent));
+synTol.addEventListener("input", renderSync);
+
+/* =========================
+   Init
+========================= */
+document.getElementById("buildPill").textContent = `Build: ${BUILD.version} · ${BUILD.date} · ${BUILD.name}`;
+
+memJson.value = JSON.stringify(memData, null, 2);
+clkJson.value = JSON.stringify(clkData, null, 2);
+navJson.value = JSON.stringify(navData, null, 2);
+decJson.value = JSON.stringify(decData, null, 2);
+synJson.value = JSON.stringify(synData, null, 2);
+
+renderMemTable(); updateMemory();
+updateClocks();
+renderNavTable(); fillNavStart(); updateNavigation();
+renderDecision();
+renderSync();
+</script>
+
+</body>
+</html>
